@@ -1,0 +1,17 @@
+{
+    //recommended - catch bugs but doesn't force to write in specific way
+    "extends": ["eslint:recommended","prettier","prettier/react"],
+    "plugins": [],
+    "parserOptions": {
+        "ecmaVersion": 2018,//we can use async await
+        "sourceType": "module",//we can be using import and export
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env": {
+        "es6": true,//arrow functions
+        "browser": true,//setTimeout, document, window
+        "node": true//prevent choking from http, require
+    }
+}
