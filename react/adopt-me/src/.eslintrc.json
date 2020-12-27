@@ -1,7 +1,17 @@
 {
     //recommended - catch bugs but doesn't force to write in specific way
-    "extends": ["eslint:recommended","prettier","prettier/react"],
-    "plugins": [],
+    "extends": [//extends - sets of rules
+        "eslint:recommended",
+        "plugin:import/errors",
+        "plugin:react/recommended",
+        "plugin:jsx-a11y/recommended",
+        "prettier",
+        "prettier/react"],
+    "rules": {
+        "react/prop-types": 0,
+        "no-console": 1
+    },
+    "plugins": ["react","import","jsx-a11y"],//plugins - new ability for eslint
     "parserOptions": {
         "ecmaVersion": 2018,//we can use async await
         "sourceType": "module",//we can be using import and export
@@ -13,5 +23,10 @@
         "es6": true,//arrow functions
         "browser": true,//setTimeout, document, window
         "node": true//prevent choking from http, require
+    },
+    "settings": {
+        "react": { 
+            "version": "detect"
+        }
     }
 }
