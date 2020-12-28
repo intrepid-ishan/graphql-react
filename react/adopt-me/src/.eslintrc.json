@@ -9,9 +9,10 @@
         "prettier/react"],
     "rules": {
         "react/prop-types": 0,
-        "no-console": 1
+        "react-hooks/rules-of-hooks": "error",
+        "no-console": "warn"
     },
-    "plugins": ["react","import","jsx-a11y"],//plugins - new ability for eslint
+    "plugins": ["react","import","jsx-a11y","react-hooks"],//plugins - new ability for eslint
     "parserOptions": {
         "ecmaVersion": 2018,//we can use async await
         "sourceType": "module",//we can be using import and export
