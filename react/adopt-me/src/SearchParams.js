@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import pet, { ANIMALS } from '@frontendmasters/pet';
 import useDropdown from './useDropdown';
 import Results from './Results';
+import ThemeContext from './ThemeContext';
 
 const SearchParams = () => {
     const [location, updateLocation] = useState("Seattle, WA");
-    const [breeds, updateBreeds] = useState([]);//#1
+    const [breeds, updateBreeds] = useState([]);
 
     //[state, component, updateState] = ("label", "defaultState", "options")
     const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
@@ -13,13 +14,16 @@ const SearchParams = () => {
 
     const [pets, setPets] = useState([]);
 
+    //ThemeContext hook
+    const [theme, setTheme] = useContext(ThemeContext);
+
     useEffect(() => {
         updateBreeds([]);
         updateBreed("");
 
         pet.breeds(animal).then(({ breeds }) => {
             const breedStrings = breeds.map(({ name }) => name);
-            updateBreeds(breedStrings);//#1
+            updateBreeds(breedStrings);
         });
     }, [animal]);
 
@@ -33,6 +37,14 @@ const SearchParams = () => {
 
         setPets(animals || []);
     }
+
+    const handleChange = (e) => {
+        const { value } = e.target;//outside async
+        setTheme((prevState) => ({
+            ...prevState,
+            buttonColor: value
+        }));
+    };
 
     return (
         <div className="search-params">
@@ -51,10 +63,22 @@ const SearchParams = () => {
                         onChange={e => updateLocation(e.target.value)}
                     />
                 </label>
-                {/* expand.... */}
                 <AnimalDropdown />
                 <BreedDropdown />
-                <button>Submit</button>
+                <label htmlFor="Theme">
+                    Theme
+                    <select
+                        value={theme.buttonColor}
+                        onChange={handleChange}
+                        onBlur={handleChange}
+                    >
+                        <option value="darkblue">Dark Blue</option>
+                        <option value="peru">Peru</option>
+                        <option value="chartreuse">Chartreuse</option>
+                        <option value="mediumorchid">Medium Orchid</option>
+                    </select>
+                </label>
+                <button style={{ backgroundColor: theme?.buttonColor }}>Submit</button>
             </form>
             <Results pets={pets} />
         </div>
