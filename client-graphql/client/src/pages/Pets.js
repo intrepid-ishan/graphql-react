@@ -5,26 +5,36 @@ import PetsList from '../components/PetsList';
 import NewPetModal from '../components/NewPetModal';
 import Loader from '../components/Loader';
 
+const PETS_FIELDS = gql`
+  fragment PetsFields on Pet{
+      id,
+      name,
+      type,
+      img,
+      vaccinated @client,
+      owner{
+        id,
+        age @client
+      }
+    }
+`;
+
 const ALL_PETS = gql`
   query AllPets {
-    pets{
-      id
-      name
-      type
-      img
-    }
+     pets{
+       ...PetsFields
+     }
   }
+  ${PETS_FIELDS}
 `;
 
 const CREATE_PET = gql`
   mutation CreateAPet($newPet:NewPetInput!) {
-    xxAddPet: addPet(input: $newPet){
-      id,
-      name,
-      type,
-      img
+    AddPetAliases: addPet(input: $newPet){
+      ...PetsFields
     }
   }
+  ${PETS_FIELDS}
 `;
 
 export default function Pets() {
@@ -33,23 +43,13 @@ export default function Pets() {
   const [createPet, { data: d, loading: l, error: e }] = useMutation(
     CREATE_PET,
     {
-      update(cache, { data: { xxAddPet } }) {
+      update(cache, { data: { AddPetAliases } }) {
         const data = cache.readQuery({ query: ALL_PETS });
         cache.writeQuery({
           query: ALL_PETS,
-          data: { pets: [xxAddPet, ...data.pets] }
+          data: { pets: [AddPetAliases, ...data.pets] }
         });
-      },
-      // optimisticResponse: {
-      //   __typename: "Mutation",
-      //   xxAddPet: {
-      //     __typename: "Pet",
-      //     id: Math.floor(Math.random() * 10000) + '',
-      //     name: 'from mutations',
-      //     type: 'CAT',
-      //     img: 'https://via.placeholder.com/300'
-      //   }
-      // }
+      }
     }
   );
 
@@ -67,7 +67,7 @@ export default function Pets() {
       variables: { newPet: input },
       optimisticResponse: {
         __typename: "Mutation",
-        xxAddPet: {
+        AddPetAliases: {
           id: Math.round(Math.random() * 1000000) + '',
           __typename: 'Pet',
           type: input.type,
