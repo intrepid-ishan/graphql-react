@@ -39,11 +39,21 @@ export default function Pets() {
           query: ALL_PETS,
           data: { pets: [xxAddPet, ...data.pets] }
         });
-      }
+      },
+      // optimisticResponse: {
+      //   __typename: "Mutation",
+      //   xxAddPet: {
+      //     __typename: "Pet",
+      //     id: Math.floor(Math.random() * 10000) + '',
+      //     name: 'from mutations',
+      //     type: 'CAT',
+      //     img: 'https://via.placeholder.com/300'
+      //   }
+      // }
     }
   );
 
-  if (loading || l) {
+  if (loading) {
     return <Loader />;
   }
 
@@ -54,7 +64,17 @@ export default function Pets() {
   const onSubmit = input => {
     setModal(false);
     createPet({
-      variables: { newPet: input }
+      variables: { newPet: input },
+      optimisticResponse: {
+        __typename: "Mutation",
+        xxAddPet: {
+          id: Math.round(Math.random() * 1000000) + '',
+          __typename: 'Pet',
+          type: input.type,
+          name: input.name,
+          img: 'https://via.placeholder.com/300'
+        }
+      }
     });
   };
 
