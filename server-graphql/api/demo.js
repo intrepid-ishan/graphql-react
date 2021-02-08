@@ -13,9 +13,20 @@ const typeDefs = gql`
         email: String
     }
 
+    type Gadget{
+        brand: String!
+        price: Int!
+    }
+
+    input GadgetInput{
+        brand: String
+        price: Int
+    }
+
     type Query{
         getUser: User!
-        getFriendEmail :myFriendEmail
+        getFriendEmail: myFriendEmail
+        getGadget(input: GadgetInput): [Gadget]
     }
 `;
 
@@ -33,6 +44,13 @@ const resolvers = {
             return{ 
                 email: "ish@mak.com"
             }
+        },
+        getGadget(_, {input}){
+            return [
+                // brand: 'apple', price:1200
+                {brand: 'apple', price: 1200},
+                {brand: 'samsung', price: 700}
+            ].filter(shoe => shoe.brand === input.brand)
         }
     }
 }
