@@ -4,8 +4,11 @@ module.exports = {
       getUser(_, __, {models}){
         models.User.findOne({})
       },
-      getPets(_, __, {models}){
-         return models.Pet.findMany()
+      getPets(_, {input}, {models}){
+         return models.Pet.findMany(input)
+      },
+      getPet(_, {input}, {models}){
+        return models.Pet.findOne(input)
       }
   }
   // Mutation: {
