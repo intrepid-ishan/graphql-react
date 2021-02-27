@@ -1,7 +1,7 @@
 const gql = require('graphql-tag');
 const {ApolloServer} = require('apollo-server');
 
-// Schema
+// Schema 
 const typeDefs = gql`
     type User{
         firstName: String!
