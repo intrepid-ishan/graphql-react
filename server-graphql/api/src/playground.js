@@ -44,3 +44,12 @@
 //       price
 //    }
 // }
+
+// mutation{
+//     newPet(input:{name:"Jojo",type:"CAT"}){
+//       id
+//       createdAt
+//       name
+//       type
+//    }
+// }
