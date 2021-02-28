@@ -37,3 +37,10 @@
 //     type
 //   }
 // }
+
+// mutation{
+//     newGadget(input:{brand:"samsung",price:400}){
+//       brand
+//       price
+//    }
+// }

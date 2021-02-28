@@ -23,10 +23,19 @@ const typeDefs = gql`
         price: Int
     }
 
+    input NewGadgetInput{
+        brand: String!
+        price: Int!
+    }
+
     type Query{
         getUser: User!
         getFriendEmail: myFriendEmail
         getGadget(input: GadgetInput): [Gadget]
+    }
+
+    type Mutation{
+        newGadget(input: NewGadgetInput!): Gadget!
     }
 `;
 
@@ -51,6 +60,11 @@ const resolvers = {
                 {brand: 'apple', price: 1200},
                 {brand: 'samsung', price: 700}
             ].filter(shoe => shoe.brand === input.brand)
+        }
+    },
+    Mutation: {
+        newGadget(_,{input}){
+            return input
         }
     }
 }
